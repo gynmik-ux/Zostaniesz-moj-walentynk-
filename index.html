@@ -1,11 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dla najsłodszej Zuzki ❤️</title>
     <style>
+        * { box-sizing: border-box; touch-action: manipulation; }
+        
         body {
             margin: 0;
             height: 100vh;
@@ -13,7 +14,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background-color: #fff0f6; /* Jaśniutki różowy */
+            background-color: #fff0f6;
             font-family: 'Verdana', sans-serif;
             overflow: hidden;
             text-align: center;
@@ -23,60 +24,52 @@
         h1 { 
             color: #ff4d8d; 
             min-height: 120px; 
-            z-index: 10;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-shadow: 2px 2px 5px rgba(255, 77, 141, 0.2);
-            line-height: 1.4;
+            z-index: 20;
+            font-size: 1.8rem;
+            transition: all 0.4s ease;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.8);
         }
 
         .buttons { 
             display: flex; 
-            gap: 25px; 
-            z-index: 10; 
+            gap: 20px; 
+            z-index: 20; 
             align-items: center;
             justify-content: center;
+            width: 100%;
         }
 
         button {
-            padding: 18px 35px;
-            font-size: 1.3rem;
+            padding: 15px 25px;
+            font-size: 1.1rem;
             border: none;
-            border-radius: 30px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 15px rgba(255, 77, 141, 0.3);
+            transition: all 0.2s ease;
             font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        #yesBtn { 
-            background-color: #ff4d8d; 
-            color: white;
-            animation: pulse 1.5s infinite;
-        }
+        #yesBtn { background-color: #ff4d8d; color: white; }
+        #noBtn { background-color: #ffd1dc; color: #ff4d8d; position: relative; }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        #noBtn { 
-            background-color: #ffd1dc; 
-            color: #ff4d8d; 
-        }
-
-        /* Urocze serduszka */
+        /* Styl OGROMNYCH serduszek */
         .heart {
             position: absolute;
-            top: -10%;
+            top: -100px;
             user-select: none;
             animation: fall linear forwards;
             pointer-events: none;
-            filter: drop-shadow(0 0 5px rgba(255, 182, 193, 0.8));
+            z-index: 5;
         }
 
         @keyframes fall {
             to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5rem; }
+            button { padding: 12px 20px; font-size: 1rem; }
         }
     </style>
 </head>
@@ -85,8 +78,8 @@
     <h1 id="question">Zuzka, sprawisz, że te Walentynki będą wyjątkowe? ❤️</h1>
     
     <div class="buttons">
-        <button id="yesBtn">Oczywiście, że TAK! ✨</button>
-        <button id="noBtn">Może później?</button>
+        <button id="yesBtn">Oczywiście, że TAK!</button>
+        <button id="noBtn">Nie</button>
     </div>
 
     <script>
@@ -98,67 +91,64 @@
         let yesScale = 1;
 
         const messages = [
-            "Zuzka, pomyśl o tych wszystkich wspólnych chwilach... ✨",
-            "Będzie nam tak słodko razem! 🍬",
-            "Zuzia, czeka na Ciebie mnóstwo uścisków! 🤗",
-            "Jesteś pewna? Mój uśmiech czeka właśnie na Ciebie! 😊",
-            "A jeśli powiem, że jesteś najwspanialsza? 🌸",
-            "Zuzka, daj się porwać tej magii! 🦄",
-            "Obiecuję, że będzie cudownie! 💖",
-            "Już prawie klikasz w ten duży różowy przycisk, prawda? 🤭"
+            "Zuzka, na pewno? ✨",
+            "Będzie tak słodko! 🍬",
+            "Zuzia, pomyśl jeszcze raz... 🌸",
+            "Tylko jedno kliknięcie w TAK! ❤️",
+            "Zuzka, nie daj się prosić! 🥰"
         ];
 
-        const heartColors = ['#ff85a2', '#ff4d8d', '#f08080', '#ffb6c1', '#ffc0cb'];
-
-        noBtn.addEventListener('click', () => {
-            clickCount++;
+        // Funkcja ucieczki przycisku (działa też na dotyk)
+        const moveNoButton = () => {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
             
+            clickCount++;
             if (clickCount <= messages.length) {
                 question.innerHTML = messages[clickCount - 1];
-            } else {
-                question.innerHTML = "Wiedziałem, że się nie oprzesz, Zuzka! 🥰";
-                noBtn.style.display = 'none';
             }
-
-            // Przycisk TAK rośnie i staje się bardziej "puchaty"
-            yesScale += 0.4;
-            yesBtn.style.transform = `scale(${yesScale})`;
-            yesBtn.style.padding = `${18 + (clickCount * 2)}px ${35 + (clickCount * 5)}px`;
             
-            // Przycisk NIE staje się mniejszy i bledszy
-            noBtn.style.opacity = Math.max(0.3, 1 - (clickCount * 0.1));
-            noBtn.style.transform = `scale(${Math.max(0.6, 1 - (clickCount * 0.05))})`;
+            yesScale += 0.3;
+            yesBtn.style.transform = `scale(${yesScale})`;
+        };
+
+        noBtn.addEventListener('mouseover', moveNoButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Blokuje kliknięcie na telefonie
+            moveNoButton();
         });
 
         yesBtn.addEventListener('click', () => {
-            question.innerHTML = "Zuzka, uczynisz mnie najszczęśliwszą osobą na świecie! 💖✨";
+            question.innerHTML = "Wiedziałem, Zuzka! Jesteś najwspanialsza! 💖";
             document.querySelector('.buttons').style.display = 'none';
-            // Prawdziwa eksplozja miłości
-            setInterval(createHeart, 40);
+            setInterval(createHeart, 40); // Eksplozja serc
         });
 
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
             
-            // Losowanie wielkości serca
-            const size = Math.floor(Math.random() * 30) + 20 + "px"; // 20px - 50px
+            // Losowanie wielkości (teraz od 40px do 100px!)
+            const size = Math.floor(Math.random() * 60) + 40 + "px";
             heart.style.fontSize = size;
             
-            // Losowanie koloru
-            heart.style.color = heartColors[Math.floor(Math.random() * heartColors.length)];
+            // Odcienie różu
+            const colors = ['#ff85a2', '#ff4d8d', '#ffb6c1', '#f08080'];
+            heart.style.color = colors[Math.floor(Math.random() * colors.length)];
             
             heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
-            heart.style.opacity = Math.random() * 0.5 + 0.5; // Bardziej widoczne
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's';
+            heart.style.opacity = Math.random() * 0.4 + 0.6;
             
             document.body.appendChild(heart);
             setTimeout(() => { heart.remove(); }, 5000);
         }
 
-        // Początkowy opad serc
-        setInterval(createHeart, 250);
+        setInterval(createHeart, 200);
     </script>
 </body>
 </html>
