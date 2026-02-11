@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dla Zuzki ❤️</title>
+    <title>Dla najsłodszej Zuzki ❤️</title>
     <style>
         body {
             margin: 0;
@@ -12,58 +13,66 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background-color: #ffeef2;
-            font-family: 'Arial', sans-serif;
+            background-color: #fff0f6; /* Jaśniutki różowy */
+            font-family: 'Verdana', sans-serif;
             overflow: hidden;
             text-align: center;
             padding: 20px;
         }
 
         h1 { 
-            color: #d63384; 
-            min-height: 100px; 
+            color: #ff4d8d; 
+            min-height: 120px; 
             z-index: 10;
-            transition: all 0.3s ease;
-            max-width: 800px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-shadow: 2px 2px 5px rgba(255, 77, 141, 0.2);
+            line-height: 1.4;
         }
 
         .buttons { 
             display: flex; 
-            gap: 20px; 
+            gap: 25px; 
             z-index: 10; 
             align-items: center;
             justify-content: center;
-            flex-wrap: wrap;
         }
 
         button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
+            padding: 18px 35px;
+            font-size: 1.3rem;
             border: none;
-            border-radius: 50px;
+            border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 15px rgba(255, 77, 141, 0.3);
+            font-weight: bold;
         }
 
         #yesBtn { 
-            background-color: #ff4d6d; 
-            color: white; 
+            background-color: #ff4d8d; 
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         #noBtn { 
-            background-color: #adb5bd; 
-            color: white; 
+            background-color: #ffd1dc; 
+            color: #ff4d8d; 
         }
 
+        /* Urocze serduszka */
         .heart {
             position: absolute;
             top: -10%;
-            color: #ff4d6d;
-            font-size: 20px;
             user-select: none;
             animation: fall linear forwards;
             pointer-events: none;
+            filter: drop-shadow(0 0 5px rgba(255, 182, 193, 0.8));
         }
 
         @keyframes fall {
@@ -73,11 +82,11 @@
 </head>
 <body>
 
-    <h1 id="question">Zuzka, zostaniesz moją Walentynką? ❤️</h1>
+    <h1 id="question">Zuzka, sprawisz, że te Walentynki będą wyjątkowe? ❤️</h1>
     
     <div class="buttons">
-        <button id="yesBtn">TAK!</button>
-        <button id="noBtn">Nie</button>
+        <button id="yesBtn">Oczywiście, że TAK! ✨</button>
+        <button id="noBtn">Może później?</button>
     </div>
 
     <script>
@@ -86,57 +95,70 @@
         const question = document.getElementById('question');
 
         let clickCount = 0;
-        let yesSize = 1.2;
+        let yesScale = 1;
 
         const messages = [
-            "Zuzka, jesteś pewna? 🥺",
-            "A może jednak zmienisz zdanie? ✨",
-            "Zuzia, nie rób mi tego... 🌹",
-            "Będę bardzo smutny... 😭",
-            "Pomyśl o tym jeszcze raz, Zuzka! 🤔",
-            "Daj spokój, kliknij TAK! ❤️",
-            "No weeeeeeź... 🙏",
-            "Zuzka, nie masz już wyjścia! 😂"
+            "Zuzka, pomyśl o tych wszystkich wspólnych chwilach... ✨",
+            "Będzie nam tak słodko razem! 🍬",
+            "Zuzia, czeka na Ciebie mnóstwo uścisków! 🤗",
+            "Jesteś pewna? Mój uśmiech czeka właśnie na Ciebie! 😊",
+            "A jeśli powiem, że jesteś najwspanialsza? 🌸",
+            "Zuzka, daj się porwać tej magii! 🦄",
+            "Obiecuję, że będzie cudownie! 💖",
+            "Już prawie klikasz w ten duży różowy przycisk, prawda? 🤭"
         ];
+
+        const heartColors = ['#ff85a2', '#ff4d8d', '#f08080', '#ffb6c1', '#ffc0cb'];
 
         noBtn.addEventListener('click', () => {
             clickCount++;
             
-            // Zmiana tekstu
             if (clickCount <= messages.length) {
                 question.innerHTML = messages[clickCount - 1];
             } else {
-                question.innerHTML = "Zuzka, teraz już musisz! 🥰";
+                question.innerHTML = "Wiedziałem, że się nie oprzesz, Zuzka! 🥰";
                 noBtn.style.display = 'none';
             }
 
-            // Powiększanie TAK
-            yesSize += 0.5; // Jeszcze szybszy wzrost!
-            yesBtn.style.transform = `scale(${yesSize})`;
+            // Przycisk TAK rośnie i staje się bardziej "puchaty"
+            yesScale += 0.4;
+            yesBtn.style.transform = `scale(${yesScale})`;
+            yesBtn.style.padding = `${18 + (clickCount * 2)}px ${35 + (clickCount * 5)}px`;
             
-            // Zmniejszanie NIE
-            const noScale = Math.max(0.5, 1 - (clickCount * 0.1));
-            noBtn.style.transform = `scale(${noScale})`;
+            // Przycisk NIE staje się mniejszy i bledszy
+            noBtn.style.opacity = Math.max(0.3, 1 - (clickCount * 0.1));
+            noBtn.style.transform = `scale(${Math.max(0.6, 1 - (clickCount * 0.05))})`;
         });
 
         yesBtn.addEventListener('click', () => {
-            question.innerHTML = "Wiedziałem, Zuzka! Najlepsza decyzja! 🥰❤️";
+            question.innerHTML = "Zuzka, uczynisz mnie najszczęśliwszą osobą na świecie! 💖✨";
             document.querySelector('.buttons').style.display = 'none';
-            setInterval(createHeart, 50);
+            // Prawdziwa eksplozja miłości
+            setInterval(createHeart, 40);
         });
 
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart');
+            
+            // Losowanie wielkości serca
+            const size = Math.floor(Math.random() * 30) + 20 + "px"; // 20px - 50px
+            heart.style.fontSize = size;
+            
+            // Losowanie koloru
+            heart.style.color = heartColors[Math.floor(Math.random() * heartColors.length)];
+            
             heart.innerHTML = '❤️';
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.animationDuration = Math.random() * 3 + 2 + 's';
-            heart.style.opacity = Math.random();
+            heart.style.opacity = Math.random() * 0.5 + 0.5; // Bardziej widoczne
+            
             document.body.appendChild(heart);
             setTimeout(() => { heart.remove(); }, 5000);
         }
 
-        setInterval(createHeart, 300);
+        // Początkowy opad serc
+        setInterval(createHeart, 250);
     </script>
 </body>
 </html>
