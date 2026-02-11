@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dla Zuzki ❤️</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffeef2;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 { 
+            color: #d63384; 
+            min-height: 100px; 
+            z-index: 10;
+            transition: all 0.3s ease;
+            max-width: 800px;
+        }
+
+        .buttons { 
+            display: flex; 
+            gap: 20px; 
+            z-index: 10; 
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        #yesBtn { 
+            background-color: #ff4d6d; 
+            color: white; 
+        }
+
+        #noBtn { 
+            background-color: #adb5bd; 
+            color: white; 
+        }
+
+        .heart {
+            position: absolute;
+            top: -10%;
+            color: #ff4d6d;
+            font-size: 20px;
+            user-select: none;
+            animation: fall linear forwards;
+            pointer-events: none;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="question">Zuzka, zostaniesz moją Walentynką? ❤️</h1>
+    
+    <div class="buttons">
+        <button id="yesBtn">TAK!</button>
+        <button id="noBtn">Nie</button>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const question = document.getElementById('question');
+
+        let clickCount = 0;
+        let yesSize = 1.2;
+
+        const messages = [
+            "Zuzka, jesteś pewna? 🥺",
+            "A może jednak zmienisz zdanie? ✨",
+            "Zuzia, nie rób mi tego... 🌹",
+            "Będę bardzo smutny... 😭",
+            "Pomyśl o tym jeszcze raz, Zuzka! 🤔",
+            "Daj spokój, kliknij TAK! ❤️",
+            "No weeeeeeź... 🙏",
+            "Zuzka, nie masz już wyjścia! 😂"
+        ];
+
+        noBtn.addEventListener('click', () => {
+            clickCount++;
+            
+            // Zmiana tekstu
+            if (clickCount <= messages.length) {
+                question.innerHTML = messages[clickCount - 1];
+            } else {
+                question.innerHTML = "Zuzka, teraz już musisz! 🥰";
+                noBtn.style.display = 'none';
+            }
+
+            // Powiększanie TAK
+            yesSize += 0.5; // Jeszcze szybszy wzrost!
+            yesBtn.style.transform = `scale(${yesSize})`;
+            
+            // Zmniejszanie NIE
+            const noScale = Math.max(0.5, 1 - (clickCount * 0.1));
+            noBtn.style.transform = `scale(${noScale})`;
+        });
+
+        yesBtn.addEventListener('click', () => {
+            question.innerHTML = "Wiedziałem, Zuzka! Najlepsza decyzja! 🥰❤️";
+            document.querySelector('.buttons').style.display = 'none';
+            setInterval(createHeart, 50);
+        });
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            heart.style.opacity = Math.random();
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
+
+        setInterval(createHeart, 300);
+    </script>
+</body>
+</html>
